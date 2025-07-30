@@ -170,7 +170,7 @@
     <script>
         document.getElementById('share').addEventListener('click', () => {
             const result = document.getElementById('numeralInput');
-            navigator.clipboard.writeText("https://angleisokay.github.io/NameValues/shared.html?name=" + encodeURIComponent(result.textContent));
+            navigator.clipboard.writeText("https://angleisokay.github.io/NameValues/shared.html?name=" + encodeURIComponent(result.value));
             alert('Share link copied to clipboard!');
         })
         const numeralMap = {
