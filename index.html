@@ -125,6 +125,21 @@
           border-color: #c0e0fa;
           transform: none;
         }
+
+        .share {
+          background-color: #27b422;
+          color: white;
+          padding: 18px;
+          border-radius: 8px;
+          margin: 20px 0;
+          font-size: 1.3em;
+          font-weight: bold;
+          min-height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s ease;
+        }
     </style>
 </head>
 <body>
@@ -139,7 +154,7 @@
         <div class="result" id="result">
             
         </div>
-
+        <button class="share" id="share">Share It!</button>
         <div class="examples">
             <h4>Try these examples:</h4>
             <div class="example-list">
@@ -153,6 +168,11 @@
     </div>
 
     <script>
+        document.getElementById('share').addEventListener('click', () => {
+            const result = document.getElementById('result');
+            navigator.clipboard.writeText("https://angleisokay.github.io/NameValues/shared.html?name=" + encodeURIComponent(result.textContent));
+            alert('Share link copied to clipboard!');
+        })
         const numeralMap = {
             'X': 1n,
             'XX': 2n,
