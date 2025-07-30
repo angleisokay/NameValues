@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Numeral Decoder ✨</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: 'Inter', sans-serif;
+          background-color: #f7f9fc;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        
+        .container {
+          background-color: #ffffff;
+          border-radius: 12px;
+          padding: 30px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+          max-width: 500px;
+          width: 100%;
+          text-align: center;
+        }
+        
+        h1 {
+          color: #334e68;
+          margin-bottom: 15px;
+          font-size: 2em;
+        }
+        
+        .subtitle {
+          color: #627d98;
+          margin-bottom: 25px;
+          font-size: 1em;
+        }
+        
+        .input-group {
+          margin-bottom: 25px;
+        }
+        
+        label {
+          display: block;
+          color: #334e68;
+          font-weight: 500;
+          margin-bottom: 8px;
+          font-size: 1em;
+        }
+        
+        input {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #e0e6ed;
+          border-radius: 8px;
+          font-size: 1.1em;
+          text-align: center;
+          background-color: #fcfdfe;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        input:focus {
+          outline: none;
+          border-color: #66b3ff;
+          box-shadow: 0 0 0 2px rgba(102, 179, 255, 0.2);
+          background-color: #ffffff;
+        }
+        
+        .result {
+          background-color: #5d9cec;
+          color: white;
+          padding: 18px;
+          border-radius: 8px;
+          margin: 20px 0;
+          font-size: 1.3em;
+          font-weight: bold;
+          min-height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s ease;
+        }
+        
+        .examples {
+          background-color: #f0f4f7;
+          border-radius: 10px;
+          padding: 15px;
+          margin-top: 20px;
+          border: 1px solid #e0e6ed;
+        }
+        
+        .examples h4 {
+          color: #334e68;
+          margin-bottom: 10px;
+        }
+        
+        .example-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          justify-content: center;
+        }
+        
+        .example-item {
+          background-color: #ffffff;
+          padding: 6px 12px;
+          border-radius: 15px;
+          font-size: 0.85em;
+          border: 1px solid #d9e2ec;
+          color: #627d98;
+          cursor: pointer;
+          transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+        
+        .example-item:hover {
+          background-color: #e3f2fd;
+          color: #334e68;
+          border-color: #c0e0fa;
+          transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Name Values</h1>
+        <p class="subtitle">How much is your name worth?</p>
+        
+        <div class="input-group">
+            <input type="text" id="numeralInput" placeholder="yvette" autocomplete="off">
+        </div>
+        
+        <div class="result" id="result">
+            
+        </div>
+
+        <div class="examples">
+            <h4>Try these examples:</h4>
+            <div class="example-list">
+                <span class="example-item">alex</span>
+                <span class="example-item">sarah</span>
+                <span class="example-item">hello</span>
+                <span class="example-item">love</span>
+                <span class="example-item">peace</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const numeralMap = {
+            'X': 1n,
+            'XX': 2n,
+            'XXX': 3n,
+            'XE': 4n,
+            'E': 5n,
+            'EX': 6n,
+            'XXXT': 7n,
+            'XXT': 8n,
+            'XT': 9n,
+            'T': 10n,
+            'TX': 11n,
+            'TXX': 12n,
+            'TXXX': 13n,
+            'TXE': 14n,
+            'TE': 15n,
+            'TEX': 16n,
+            'TXXXT': 17n,
+            'TXXT': 18n,
+            'TXT': 19n,
+            'TT': 20n,
+            'TTT': 30n,
+            'TS': 40n,
+            'S': 50n,
+            'M': 100n,
+            'Y': 500n,
+            'L': 1000n,
+            'O': 5000n,
+            'H': 10000n,
+            'B': 50000n,
+            'W': 100000n,
+            'Z': 500000n,
+            'D': 1000000n,
+            'K': 10000000n,
+            'R': 100000000n,
+            'G': 1000000000n,
+            'I': 100000000000n,
+            'C': 1000000000000n,
+            'U': 100000000000000n,
+            'N': 1000000000000000n,
+            'A': 100000000000000000n,
+            'F': 1000000000000000000n,
+            'J': 100000000000000000000n,
+            'P': 1000000000000000000000n,
+            'Q': 100000000000000000000000n,
+            'V': 1000000000000000000000000n
+        };
+
+        function decodeNumeral(input) {
+            if (!input) return 0n;
+
+            const cleanInput = input.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!cleanInput) return 0n;
+
+            let total = 0n;
+            let i = 0; 
+        
+            const sortedNumerals = Object.keys(numeralMap).sort((a, b) => b.length - a.length);
+
+            while (i < cleanInput.length) {
+                let matched = false;
+                for (const symbol of sortedNumerals) {
+                    if (cleanInput.substring(i).startsWith(symbol)) {
+                        total += numeralMap[symbol];
+                        i += symbol.length;
+                        matched = true;
+                        break;
+                    }
+                }
+
+                if (!matched) {
+                    i++;
+                }
+            }
+            return total;
+        }
+
+        const inputElement = document.getElementById('numeralInput');
+        const resultElement = document.getElementById('result');
+
+        function updateResult() {
+            const value = inputElement.value.trim();
+            
+            if (!value) {
+                resultElement.textContent = '';
+                resultElement.className = 'result';
+                return;
+            }
+            
+            const decodedValue = decodeNumeral(value);
+            
+            resultElement.textContent = decodedValue.toLocaleString();
+            resultElement.className = 'result';
+        }
+
+        inputElement.addEventListener('input', updateResult);
+        inputElement.addEventListener('keyup', updateResult); 
+
+        document.querySelectorAll('.example-item').forEach(item => {
+            item.addEventListener('click', () => {
+                inputElement.value = item.textContent;
+                updateResult();
+                inputElement.focus();
+            });
+        });
+
+        inputElement.focus();
+    </script>
+</body>
+</html>
