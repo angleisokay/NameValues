@@ -66,9 +66,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Name Value</h1>
+        <h1>How much is _'s name worth?</h1>
         <div class="result" id="result"></div>
-        <div onclick="window.location.href = '/';" class="back-link" style="cursor: pointer;">Try your own name!</div>
+        <div onclick="window.location.href = '/NameValues/';" class="back-link" style="cursor: pointer;">Try your own name!</div>
     </div>
     <script>
         const numeralMap = {
@@ -123,6 +123,7 @@
             resultElement.textContent = "No name provided in the URL.";
         } else {
             const value = decodeNumeral(name);
+            document.getElementById(`How much is ${name}'s name worth?`)
             document.title = `How much is ${name}'s name worth?`;
             resultElement.textContent = `${name}'s name is worth ${value.toLocaleString()}`;
         }
