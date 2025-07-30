@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Value Result ✨</title>
+    <style>
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        body {
+          font-family: 'Inter', sans-serif;
+          background-color: #f7f9fc;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        .container {
+          background-color: #ffffff;
+          border-radius: 12px;
+          padding: 30px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+          max-width: 520px;
+          width: 100%;
+          text-align: center;
+        }
+        h1 {
+          color: #334e68;
+          margin-bottom: 20px;
+          font-size: 2em;
+        }
+        .result {
+          background-color: #5d9cec;
+          color: white;
+          padding: 18px;
+          border-radius: 8px;
+          margin: 20px 0;
+          font-size: 1.3em;
+          font-weight: bold;
+          min-height: 55px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background-color 0.2s ease;
+        }
+        .back-link {
+          display: inline-block;
+          margin-top: 15px;
+          color: #627d98;
+          text-decoration: none;
+          font-size: 1em;
+          transition: color 0.2s;
+        }
+        .back-link:hover {
+          color: #334e68;
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Name Value</h1>
+        <div class="result" id="result"></div>
+        <a href="index.html" class="back-link">&larr; Try another name</a>
+    </div>
+    <script>
+        const numeralMap = {
+            'X': 1n, 'XX': 2n, 'XXX': 3n, 'XE': 4n, 'E': 5n, 'EX': 6n,
+            'XXXT': 7n, 'XXT': 8n, 'XT': 9n, 'T': 10n, 'TX': 11n,
+            'TXX': 12n, 'TXXX': 13n, 'TXE': 14n, 'TE': 15n, 'TEX': 16n,
+            'TXXXT': 17n, 'TXXT': 18n, 'TXT': 19n, 'TT': 20n, 'TTT': 30n,
+            'TS': 40n, 'S': 50n, 'M': 100n, 'Y': 500n, 'L': 1000n,
+            'O': 5000n, 'H': 10000n, 'B': 50000n, 'W': 100000n,
+            'Z': 500000n, 'D': 1000000n, 'K': 10000000n,
+            'R': 100000000n, 'G': 1000000000n, 'I': 100000000000n,
+            'C': 1000000000000n, 'U': 100000000000000n,
+            'N': 1000000000000000n, 'A': 100000000000000000n,
+            'F': 1000000000000000000n, 'J': 100000000000000000000n,
+            'P': 1000000000000000000000n, 'Q': 100000000000000000000000n,
+            'V': 1000000000000000000000000n
+        };
+
+        function decodeNumeral(input) {
+            if (!input) return 0n;
+            const cleanInput = input.toUpperCase().replace(/[^A-Z]/g, '');
+            if (!cleanInput) return 0n;
+
+            let total = 0n;
+            let i = 0; 
+            const sortedNumerals = Object.keys(numeralMap).sort((a, b) => b.length - a.length);
+
+            while (i < cleanInput.length) {
+                let matched = false;
+                for (const symbol of sortedNumerals) {
+                    if (cleanInput.substring(i).startsWith(symbol)) {
+                        total += numeralMap[symbol];
+                        i += symbol.length;
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched) i++;
+            }
+            return total;
+        }
+
+        function getNameFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('name') || '';
+        }
+
+        const resultElement = document.getElementById('result');
+        const name = getNameFromQuery().trim();
+
+        if (!name) {
+            resultElement.textContent = "No name provided in the URL.";
+        } else {
+            const value = decodeNumeral(name);
+            resultElement.textContent = `${name} is worth ${value.toLocaleString()}`;
+        }
+    </script>
+</body>
+</html>
