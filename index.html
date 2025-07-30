@@ -148,7 +148,7 @@
         <p class="subtitle">How much is your name worth?</p>
         
         <div class="input-group">
-            <input type="text" id="numeralInput" placeholder="yvette" autocomplete="off">
+            <input type="text" id="numeralInput" placeholder="yvette" autocomplete="name">
         </div>
         
         <div class="result" id="result">
@@ -169,7 +169,7 @@
 
     <script>
         document.getElementById('share').addEventListener('click', () => {
-            const result = document.getElementById('result');
+            const result = document.getElementById('numeralInput');
             navigator.clipboard.writeText("https://angleisokay.github.io/NameValues/shared.html?name=" + encodeURIComponent(result.textContent));
             alert('Share link copied to clipboard!');
         })
