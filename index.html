@@ -148,13 +148,13 @@
         <p class="subtitle">How much is your name worth?</p>
         
         <div class="input-group">
-            <input type="text" id="numeralInput" placeholder="yvette" autocomplete="name">
+            <input type="text" id="numeralInput" placeholder="yvette" autocomplete="off">
         </div>
         
         <div class="result" id="result">
             
         </div>
-        <button class="share" id="share">Share It!</button>
+        <div class="share" id="share" onclick="share()" style="cursor: pointer;" >Share It!</div>
         <div class="examples">
             <h4>Try these examples:</h4>
             <div class="example-list">
@@ -168,11 +168,11 @@
     </div>
 
     <script>
-        document.getElementById('share').addEventListener('click', () => {
+        function share() {
             const result = document.getElementById('numeralInput');
             navigator.clipboard.writeText("https://angleisokay.github.io/NameValues/shared.html?name=" + encodeURIComponent(result.value));
             alert('Share link copied to clipboard!');
-        })
+        }
         const numeralMap = {
             'X': 1n,
             'XX': 2n,
