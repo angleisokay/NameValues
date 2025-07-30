@@ -123,7 +123,7 @@
             resultElement.textContent = "No name provided in the URL.";
         } else {
             const value = decodeNumeral(name);
-            document.getElementById('title').textContent = `How much is ${name}'s name worth?`)
+            document.getElementById('title').textContent = `How much is ${name}'s name worth?`
             document.title = `How much is ${name}'s name worth?`;
             resultElement.textContent = `${name}'s name is worth ${value.toLocaleString()}`;
         }
